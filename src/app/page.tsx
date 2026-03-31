@@ -1,65 +1,120 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { useEffect, useState } from "react";
+import { Card, CardHeader } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+
+const DISCORD_AVATAR_URL = "https://cdn.discordapp.com/embed/avatars/0.png";
+const DECORATION_URL =
+  "https://cdn.discordapp.com/avatar-decoration-presets/a_3d1e6078b2e4c8865e0ad0f429d651b1.png?size=240&passthrough=true";
+
+const SERVERS = [
+  {
+    name: "nicealts",
+    invite: "https://discord.gg/nicealts",
+    description: "Minecraft NFAs.",
+    icon: "https://cdn.discordapp.com/icons/1347699377241591850/cff5ab4062bb723d2f72b9f79efdfbdd.png?size=64",
+  },
+  {
+    name: "aquamfa",
+    invite: "https://discord.gg/aquamfa",
+    description: "Minecraft MFAs.",
+    icon: "https://cdn.discordapp.com/icons/1407075158455357450/c3a39b27c262ded935e9e650f2d2248f.png?size=64",
+  },
+];
+
+export default function PortfolioPage() {
+  const [height, setHeight] = useState(0);
+
+  useEffect(() => {
+    const update = () => setHeight(window.innerHeight);
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
+    <div
+      className="flex items-center justify-center bg-background px-4"
+      style={{ height: height || "100svh" }}
+    >
+      <div className="flex w-full max-w-md flex-col gap-3">
+
+        {/* Profile card */}
+        <Card className="w-full overflow-visible">
+          <CardHeader className="relative flex flex-col items-center gap-4 px-5 py-4">
             <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              href="https://discord.com/users/1487122974376067280"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="absolute right-5 top-4 z-30"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              <Button variant="secondary" size="icon-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                </svg>
+              </Button>
+            </a>
+
+            <div className="relative h-32 w-32">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={DISCORD_AVATAR_URL}
+                alt="cheating"
+                width={104}
+                height={104}
+                className="absolute top-1/2 left-1/2 z-10 size-26 -translate-x-1/2 -translate-y-1/2 rounded-full"
+              />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={DECORATION_URL}
+                alt="decoration"
+                width={128}
+                height={128}
+                className="pointer-events-none absolute top-0 left-0 z-20 h-32 w-32"
+              />
+            </div>
+
+            <div className="flex flex-col items-center gap-2">
+              <span className="text-2xl font-bold tracking-[-0.10em] text-card-foreground">
+                cheating
+              </span>
+              <span className="text-sm text-muted-foreground">building :3</span>
+              <Badge variant="secondary">1487122974376067280</Badge>
+            </div>
+          </CardHeader>
+        </Card>
+
+        {/* Server cards */}
+        {SERVERS.map((server) => (
+          <div
+            key={server.name}
+            className="flex items-center justify-between rounded-xl bg-card px-5 py-4 ring-1 ring-foreground/10"
+          >
+            <div className="flex items-center gap-3">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={server.icon} alt={server.name} className="size-10 rounded-xl" />
+              <div className="flex flex-col gap-1">
+                <span className="text-[0.9rem] font-semibold tracking-[-0.04em] text-card-foreground">
+                  {server.name}
+                </span>
+                <span className="text-[0.8rem] text-muted-foreground">
+                  {server.description}
+                </span>
+              </div>
+            </div>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => window.open(server.invite, "_blank", "noopener,noreferrer")}
             >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+              Join
+            </Button>
+          </div>
+        ))}
+
+      </div>
     </div>
   );
 }
